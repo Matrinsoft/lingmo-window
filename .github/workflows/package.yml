@@ -34,20 +34,16 @@ jobs:
       - name: Build Debian package
         run: dpkg-buildpackage -us -uc -b
 
-      - name: Copy .deb artifacts
+      - name: Build Debian package
         run: |
+          dpkg-buildpackage -us -uc -b
           mkdir -p artifacts
-          echo "Workspace: ${{ github.workspace }}"
-          echo "Contents of parent dir:"
-          ls -la "${{ github.workspace }}/.." || true
-          echo "Looking for .deb files..."
-          find "${{ github.workspace }}/.." -maxdepth 1 -name "*.deb" -exec cp -v {} artifacts/ \;
-          echo "Artifacts found:"
-          ls -la artifacts/
+          mv ../*.deb ../*.buildinfo ../*.changes artifacts/ 2>/dev/null || true
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload .deb
+        uses: actions/upload-artifact@v4
         with:
-          name: deb-packages
+          name: lingmo-controls-deb
           path: artifacts/
 
   rpm:
@@ -77,8 +73,10 @@ jobs:
           tar -czf ~/rpmbuild/SOURCES/lingmo-window-1.0.0.tar.gz .
           cp rpm/lingmo-window.spec ~/rpmbuild/SPECS/
           rpmbuild -ba ~/rpmbuild/SPECS/lingmo-window.spec
+          mkdir -p artifacts
+          cp ~/rpmbuild/RPMS/**/*.rpm artifacts/ 2>/dev/null || true
 
       - uses: actions/upload-artifact@v4
         with:
           name: rpm-packages
-          path: ~/rpmbuild/RPMS/**/*.rpm
+          path: artifacts/
