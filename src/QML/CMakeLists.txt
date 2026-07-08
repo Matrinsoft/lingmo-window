@@ -6,6 +6,8 @@ set(SOURCES
     LingmoWindowPlugin.cpp
 )
 
+set(CMAKE_AUTOMOC ON)
+
 qt_add_qml_module(LingmoWindowQml
     URI Lingmo.Window
     VERSION 1.0

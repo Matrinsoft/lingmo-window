@@ -19,6 +19,7 @@ option(BUILD_EXAMPLES "Build example programs" OFF)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 find_package(Qt6 COMPONENTS Qml Quick Test QUIET)
+qt_policy(SET QTP0001 NEW)
 find_package(LingmoTheme REQUIRED)
 
 add_subdirectory(src)
