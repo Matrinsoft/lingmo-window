@@ -1,5 +1,16 @@
 lingmo-window (1.0.0) unstable; urgency=medium
 
   * Initial release.
+  * Architecture correction phase: refactored to pure SDK library.
+    - Removed Windows-specific code (DWM, Mica, Acrylic).
+    - Refactored WindowEffect -> WindowEffects: pure state holder, no platform impl.
+    - Refactored Window from QWindow subclass -> WindowController: decoupled abstraction.
+    - Added WindowChrome: CSD hit-testing, drag regions, resize margins.
+    - Restructured src/platform/: Wayland, X11, Generic subdirectories.
+    - Removed WindowEffectManager (contained Windows DWM code).
+    - Removed WindowManager (over-engineered strategy pattern, now delegated to controller).
+    - Added architecture constraint tests (no KWin, no KDE, no Windows API).
+    - Updated QML module: WindowEffect -> WindowEffects.
+    - All visual properties sourced from lingmo-theme.
 
  -- Lingmo OS Team <team@lingmo.org>  Wed, 08 Jul 2026 18:50:00 +0000

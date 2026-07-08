@@ -1,18 +1,19 @@
 set(PRIVATE_HEADERS
     private/Window_p.h
     private/HeaderBar_p.h
-    private/WindowEffect_p.h
-    private/WindowManager_p.h
-    private/WindowEffectManager_p.h
+    private/WindowController_p.h
+    private/WindowChrome_p.h
+    private/WindowEffects_p.h
 )
 
 set(SOURCES
     Window.cpp
+    WindowController.cpp
+    WindowChrome.cpp
+    WindowEffects.cpp
     HeaderBar.cpp
-    WindowEffect.cpp
-    WindowEffectManager.cpp
-    WindowManager.cpp
     WindowHelper.cpp
+    WindowManager.cpp
 )
 
 add_library(LingmoWindow SHARED ${SOURCES} ${PRIVATE_HEADERS})

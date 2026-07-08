@@ -37,5 +37,5 @@ Depends: liblingmowindow1 (= ${binary:Version}),
          ${shlibs:Depends},
          ${misc:Depends}
 Description: Lingmo Desktop - Application Window Base Library (QML module)
- This package contains QML bindings for the Lingmo Window library,
- providing Window, HeaderBar, Dialog, and WindowEffect QML types.
+  This package contains QML bindings for the Lingmo Window library,
+  providing Window, HeaderBar, Dialog, and WindowEffects QML types.

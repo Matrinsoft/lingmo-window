@@ -25,8 +25,7 @@ enum class Platform {
     Unknown = 0,
     X11     = 1,
     Wayland = 2,
-    Windows = 3,
-    macOS   = 4
+    macOS   = 3
 };
 
 } // namespace Lingmo

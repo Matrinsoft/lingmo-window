@@ -41,7 +41,7 @@ Requires:       liblingmowindow%{libver}%{?isa} = %{version}-%{release}
 Requires:       qml6-lingmo-theme
 
 %description -n qml6-lingmowindow
-QML module providing Window, HeaderBar, Dialog, and WindowEffect types.
+QML module providing Window, HeaderBar, Dialog, and WindowEffects types.
 
 %prep
 %autosetup

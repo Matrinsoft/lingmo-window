@@ -6,36 +6,11 @@
 #include <QString>
 #include <QSize>
 #include <QMargins>
-#include <QTimer>
 
 namespace Lingmo {
 
-class WindowManager;
-
-class WindowPrivate
-{
-public:
-    explicit WindowPrivate(Window *qq);
-    ~WindowPrivate();
-
-    void init();
-    void updateExtraMargins();
-    void applyWindowState(Lingmo::WindowState state);
-    Lingmo::WindowState qtToLingmoState(Qt::WindowState state) const;
-
-    Window *q;
-
-    QString title;
-    QIcon icon;
-    QSize minSize;
-    QSize maxSize;
-    bool resizable = true;
-    bool closable = true;
-    Lingmo::WindowState state = Lingmo::WindowState::Normal;
-    Lingmo::WindowType type = Lingmo::WindowType::Normal;
-
-    QMargins extraMargins;
-    WindowManager *manager = nullptr;
-};
+// WindowPrivate is no longer needed as Window delegates to WindowController.
+// This header is retained for backward compatibility of the private headers
+// include pattern. The actual implementation is in WindowControllerPrivate.
 
 } // namespace Lingmo

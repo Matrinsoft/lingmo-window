@@ -1,5 +1,7 @@
-#include "private/Window_p.h"
-#include "private/WindowManager_p.h"
+#include <LingmoWindow/Window.h>
+#include <LingmoWindow/WindowController.h>
+#include <LingmoWindow/WindowChrome.h>
+#include <LingmoWindow/WindowEffects.h>
 
 #include <QResizeEvent>
 #include <QMoveEvent>
@@ -9,153 +11,96 @@
 
 namespace Lingmo {
 
-WindowPrivate::WindowPrivate(Window *qq)
-    : q(qq)
-{
-}
-
-WindowPrivate::~WindowPrivate() = default;
-
-void WindowPrivate::init()
-{
-    manager.reset(WindowManager::create());
-}
-
-void WindowPrivate::updateExtraMargins()
-{
-    extraMargins = manager ? manager->extraMargins(q) : QMargins();
-}
-
-void WindowPrivate::applyWindowState(Lingmo::WindowState s)
-{
-    state = s;
-    if (manager) {
-        manager->setWindowState(q, s);
-    }
-}
-
 Window::Window(QWindow *parent)
     : QWindow(parent)
-    , d(std::make_unique<WindowPrivate>(this))
+    , m_controller(new WindowController(this))
 {
-    d->init();
+    m_controller->setWindow(this);
 }
 
 Window::~Window() = default;
 
-QString Window::title() const { return d->title; }
+QString Window::title() const { return m_controller->title(); }
 
 void Window::setTitle(const QString &title)
 {
-    if (d->title == title) return;
-    d->title = title;
-    if (d->manager) d->manager->setTitle(this, title);
-    QWindow::setTitle(title);
-    emit titleChanged();
+    m_controller->setTitle(title);
 }
 
-QIcon Window::icon() const { return d->icon; }
+QIcon Window::icon() const { return m_controller->icon(); }
 
 void Window::setIcon(const QIcon &icon)
 {
-    if (d->icon.cacheKey() == icon.cacheKey()) return;
-    d->icon = icon;
-    if (d->manager) d->manager->setIcon(this, icon);
-    emit iconChanged();
+    m_controller->setIcon(icon);
 }
 
-QSize Window::minimumSize() const { return d->minSize; }
+QSize Window::minimumSize() const { return m_controller->minimumSize(); }
 
 void Window::setMinimumSize(const QSize &size)
 {
-    if (d->minSize == size) return;
-    d->minSize = size;
-    QWindow::setMinimumSize(size);
-    emit minimumSizeChanged();
+    m_controller->setMinimumSize(size);
 }
 
-QSize Window::maximumSize() const { return d->maxSize; }
+QSize Window::maximumSize() const { return m_controller->maximumSize(); }
 
 void Window::setMaximumSize(const QSize &size)
 {
-    if (d->maxSize == size) return;
-    d->maxSize = size;
-    QWindow::setMaximumSize(size);
-    emit maximumSizeChanged();
+    m_controller->setMaximumSize(size);
 }
 
-bool Window::isResizable() const { return d->resizable; }
+bool Window::isResizable() const { return m_controller->isResizable(); }
 
 void Window::setResizable(bool resizable)
 {
-    if (d->resizable == resizable) return;
-    d->resizable = resizable;
-    if (d->manager) d->manager->setResizable(this, resizable);
-    emit resizableChanged();
+    m_controller->setResizable(resizable);
 }
 
-bool Window::isClosable() const { return d->closable; }
+bool Window::isClosable() const { return m_controller->isClosable(); }
 
 void Window::setClosable(bool closable)
 {
-    if (d->closable == closable) return;
-    d->closable = closable;
-    emit closableChanged();
+    m_controller->setClosable(closable);
 }
 
 Lingmo::WindowState Window::windowState() const
 {
-    return d->manager ? d->manager->windowState(this) : d->state;
+    return m_controller->windowState();
 }
 
 void Window::setWindowState(Lingmo::WindowState state)
 {
-    if (d->state == state) return;
-    d->applyWindowState(state);
-    emit windowStateChanged(d->state);
-}
-
-void Window::minimize() { setWindowState(Lingmo::WindowState::Minimized); }
-
-void Window::maximize() { setWindowState(Lingmo::WindowState::Maximized); }
-
-void Window::fullscreen() { setWindowState(Lingmo::WindowState::FullScreen); }
-
-void Window::restore() { setWindowState(Lingmo::WindowState::Normal); }
-
-void Window::show()
-{
-    QWindow::show();
-}
-
-void Window::hide()
-{
-    QWindow::hide();
-    d->state = Lingmo::WindowState::Hidden;
-    emit windowStateChanged(d->state);
-}
-
-void Window::close()
-{
-    QWindow::close();
-    emit closed();
+    m_controller->setWindowState(state);
 }
 
 void Window::centerOnScreen(QScreen *screen)
 {
-    if (!screen) screen = QGuiApplication::primaryScreen();
-    if (!screen) return;
-    const QRect geo = screen->availableGeometry();
-    const QSize sz = geometry().size().expandedTo(minimumSize());
-    const int x = geo.x() + (geo.width() - sz.width()) / 2;
-    const int y = geo.y() + (geo.height() - sz.height()) / 2;
-    setGeometry(x, y, sz.width(), sz.height());
+    m_controller->centerOnScreen(screen);
 }
 
 QMargins Window::extraMargins() const
 {
-    return d->extraMargins;
+    return m_controller->extraMargins();
 }
+
+WindowController *Window::controller() const { return m_controller; }
+
+WindowChrome *Window::chrome() const { return m_controller->chrome(); }
+
+WindowEffects *Window::effects() const { return m_controller->effects(); }
+
+void Window::minimize() { m_controller->minimize(); }
+
+void Window::maximize() { m_controller->maximize(); }
+
+void Window::fullscreen() { m_controller->fullscreen(); }
+
+void Window::restore() { m_controller->restore(); }
+
+void Window::show() { QWindow::show(); }
+
+void Window::hide() { QWindow::hide(); }
+
+void Window::close() { QWindow::close(); }
 
 void Window::resizeEvent(QResizeEvent *event)
 {
@@ -181,8 +126,6 @@ bool Window::event(QEvent *event)
 {
     switch (event->type()) {
     case QEvent::WindowActivate:
-        emit activeChanged();
-        break;
     case QEvent::WindowDeactivate:
         emit activeChanged();
         break;

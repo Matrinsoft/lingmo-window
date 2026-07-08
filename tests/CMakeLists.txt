@@ -24,3 +24,6 @@ endif()
 
 add_lingmo_window_test(tst_Window)
 add_lingmo_window_test(tst_HeaderBar)
+add_lingmo_window_test(tst_WindowController)
+add_lingmo_window_test(tst_WindowChrome)
+add_lingmo_window_test(tst_Architecture)

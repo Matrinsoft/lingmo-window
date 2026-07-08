@@ -4,4 +4,4 @@ plugin LingmoWindowQml
 Window 1.0 Window.qml
 HeaderBar 1.0 HeaderBar.qml
 Dialog 1.0 Dialog.qml
-WindowEffect 1.0 WindowEffect.qml
+WindowEffects 1.0 WindowEffects.qml

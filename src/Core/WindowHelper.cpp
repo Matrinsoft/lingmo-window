@@ -46,7 +46,6 @@ Lingmo::Platform currentPlatform()
     const QString name = QGuiApplication::platformName();
     if (name.contains("wayland", Qt::CaseInsensitive)) return Platform::Wayland;
     if (name.contains("xcb", Qt::CaseInsensitive)) return Platform::X11;
-    if (name.contains("windows", Qt::CaseInsensitive)) return Platform::Windows;
     if (name.contains("cocoa", Qt::CaseInsensitive)) return Platform::macOS;
     return Platform::Unknown;
 }
@@ -64,15 +63,6 @@ QWindow *transientParent(QWindow *window)
 void setTransientParent(QWindow *window, QWindow *parent)
 {
     if (window) window->setTransientParent(parent);
-}
-
-bool supportsWindowEffects()
-{
-#if defined(Q_OS_WIN)
-    return true;
-#else
-    return false;
-#endif
 }
 
 } // namespace WindowHelper

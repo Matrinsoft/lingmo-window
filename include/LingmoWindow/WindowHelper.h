@@ -31,8 +31,6 @@ LINGMOWINDOW_EXPORT QWindow *transientParent(QWindow *window);
 
 LINGMOWINDOW_EXPORT void setTransientParent(QWindow *window, QWindow *parent);
 
-LINGMOWINDOW_EXPORT bool supportsWindowEffects();
-
 } // namespace WindowHelper
 
 } // namespace Lingmo

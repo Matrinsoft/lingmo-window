@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls as T
+import QtQuick.Layouts
 import Lingmo.Theme
 
 T.Control {
@@ -131,6 +132,8 @@ T.Control {
         }
     }
 
+    // Drag handling uses WindowChrome logic
+    // For QML, this provides simple header bar dragging
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton

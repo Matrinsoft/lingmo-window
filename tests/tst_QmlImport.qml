@@ -29,9 +29,9 @@ TestCase {
         verify(dialog !== null, "Dialog should be creatable");
     }
 
-    function test_createWindowEffect() {
-        var effect = createTemporaryObject(WindowEffect, {}, {});
-        verify(effect !== null, "WindowEffect should be creatable");
+    function test_createWindowEffects() {
+        var effect = createTemporaryObject(WindowEffects, {}, {});
+        verify(effect !== null, "WindowEffects should be creatable");
     }
 
     function test_themeImport() {

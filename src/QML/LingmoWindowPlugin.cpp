@@ -1,6 +1,8 @@
 #include <LingmoWindow/Window.h>
+#include <LingmoWindow/WindowController.h>
+#include <LingmoWindow/WindowChrome.h>
+#include <LingmoWindow/WindowEffects.h>
 #include <LingmoWindow/HeaderBar.h>
-#include <LingmoWindow/WindowEffect.h>
 #include <LingmoWindow/Types.h>
 
 #include <QtQml/qqml.h>
@@ -22,10 +24,14 @@ public:
     {
         qmlRegisterUncreatableType<Lingmo::Window>(uri, 1, 0, "Window",
             QStringLiteral("Window is provided by the QML layer"));
+        qmlRegisterUncreatableType<Lingmo::WindowController>(uri, 1, 0, "WindowController",
+            QStringLiteral("WindowController is provided by the C++ layer"));
+        qmlRegisterUncreatableType<Lingmo::WindowChrome>(uri, 1, 0, "WindowChrome",
+            QStringLiteral("WindowChrome is provided by the C++ layer"));
+        qmlRegisterUncreatableType<Lingmo::WindowEffects>(uri, 1, 0, "WindowEffects",
+            QStringLiteral("WindowEffects is provided by the C++ layer"));
         qmlRegisterUncreatableType<Lingmo::HeaderBar>(uri, 1, 0, "HeaderBar",
             QStringLiteral("HeaderBar is provided by the QML layer"));
-        qmlRegisterUncreatableType<Lingmo::WindowEffect>(uri, 1, 0, "WindowEffect",
-            QStringLiteral("WindowEffect is provided by the QML layer"));
     }
 };
 

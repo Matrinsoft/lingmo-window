@@ -1,4 +1,7 @@
 #include <LingmoWindow/Window.h>
+#include <LingmoWindow/WindowController.h>
+#include <LingmoWindow/WindowChrome.h>
+#include <LingmoWindow/WindowEffects.h>
 #include <LingmoWindow/WindowHelper.h>
 
 #include <QTest>
@@ -11,10 +14,6 @@ class tst_Window : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-    void initTestCase()
-    {
-    }
-
     void testDefaultConstruction()
     {
         Lingmo::Window window;
@@ -25,6 +24,46 @@ private Q_SLOTS:
         QVERIFY(window.isResizable());
         QVERIFY(window.isClosable());
         QCOMPARE(window.windowState(), Lingmo::WindowState::Normal);
+    }
+
+    void testController()
+    {
+        Lingmo::Window window;
+        auto *ctrl = window.controller();
+        QVERIFY(ctrl != nullptr);
+        QVERIFY(ctrl->hasWindow());
+        QVERIFY(ctrl->chrome() != nullptr);
+        QVERIFY(ctrl->effects() != nullptr);
+    }
+
+    void testChrome()
+    {
+        Lingmo::Window window;
+        auto *chrome = window.chrome();
+        QVERIFY(chrome != nullptr);
+        QCOMPARE(chrome->cornerRadius(), 0.0);
+        QCOMPARE(chrome->resizeMargins(), QMargins(8, 8, 8, 8));
+
+        chrome->setCornerRadius(8.0);
+        QCOMPARE(chrome->cornerRadius(), 8.0);
+
+        chrome->setResizeMargins(QMargins(4, 4, 4, 4));
+        QCOMPARE(chrome->resizeMargins(), QMargins(4, 4, 4, 4));
+    }
+
+    void testEffects()
+    {
+        Lingmo::Window window;
+        auto *effects = window.effects();
+        QVERIFY(effects != nullptr);
+        QVERIFY(!effects->isBlurEnabled());
+        QVERIFY(!effects->isDarkModeEnabled());
+
+        effects->setBlurEnabled(true);
+        QVERIFY(effects->isBlurEnabled());
+
+        effects->setDarkModeEnabled(true);
+        QVERIFY(effects->isDarkModeEnabled());
     }
 
     void testTitle()
@@ -110,12 +149,6 @@ private Q_SLOTS:
         QVERIFY(!Lingmo::WindowHelper::platformName().isEmpty());
         QVERIFY(!Lingmo::WindowHelper::isWayland()
                 || !Lingmo::WindowHelper::isX11());
-    }
-
-    void testExtraMargins()
-    {
-        Lingmo::Window window;
-        QCOMPARE(window.extraMargins(), QMargins());
     }
 };
 
