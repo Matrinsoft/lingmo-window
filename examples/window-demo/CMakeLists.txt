@@ -8,7 +8,7 @@ qt_add_executable(window-demo
 target_link_libraries(window-demo
     PRIVATE
         Lingmo::Window
-        Lingmo::LingmoTheme
+        ${LINGMO_THEME_TARGET}
         Qt6::Quick
         Qt6::Qml
 )

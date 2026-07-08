@@ -29,7 +29,7 @@ target_include_directories(LingmoWindow
 
 target_link_libraries(LingmoWindow
     PUBLIC
-        Lingmo::LingmoTheme
+        ${LINGMO_THEME_TARGET}
     PRIVATE
         Qt6::Core
         Qt6::Gui
