@@ -1,6 +1,11 @@
-file(GLOB QML_FILES
+file(GLOB QML_SRC
     "${CMAKE_SOURCE_DIR}/qml/Lingmo/Window/*.qml"
 )
+foreach(FILE ${QML_SRC})
+    list(APPEND QML_FILES "${FILE}")
+    get_filename_component(FNAME "${FILE}" NAME)
+    set_source_files_properties("${FILE}" PROPERTIES QT_RESOURCE_ALIAS "${FNAME}")
+endforeach()
 
 set(SOURCES
     LingmoWindowPlugin.cpp
