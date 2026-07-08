@@ -27,8 +27,10 @@ jobs:
           done
           dpkg -i /tmp/liblingmotheme*.deb || apt-get install -y -f
           echo "=== Verifying lingmo-theme installation ==="
+          find /usr -name "LingmoThemeConfig.cmake" 2>/dev/null
           ls -la /usr/lib/*/cmake/LingmoTheme/ 2>&1 || echo "No cmake files found"
           dpkg -l | grep lingmotheme
+          echo "LingmoTheme_DIR=/usr/lib/x86_64-linux-gnu/cmake/LingmoTheme"
 
       - uses: actions/checkout@v4
 

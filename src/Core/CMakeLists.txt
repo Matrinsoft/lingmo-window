@@ -16,6 +16,7 @@ set(SOURCES
     WindowManager.cpp
 )
 
+set(CMAKE_AUTOMOC ON)
 add_library(LingmoWindow SHARED ${SOURCES} ${PRIVATE_HEADERS})
 add_library(Lingmo::Window ALIAS LingmoWindow)
 

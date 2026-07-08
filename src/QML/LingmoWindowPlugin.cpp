@@ -20,7 +20,7 @@ public:
         Q_UNUSED(uri);
     }
 
-    void registerTypes(const char *uri) override
+    void registerTypes(const char *uri)
     {
         qmlRegisterUncreatableType<Lingmo::Window>(uri, 1, 0, "Window",
             QStringLiteral("Window is provided by the QML layer"));
