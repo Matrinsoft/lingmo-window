@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update -qq
-          apt-get install -y -qq cmake ninja-build qt6-base-dev \
+          apt-get install -y -qq cmake ninja-build g++ qt6-base-dev \
             qt6-declarative-dev curl jq
 
       - name: Download lingmo-theme
