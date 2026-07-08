@@ -45,9 +45,9 @@ jobs:
         run: cmake --build build
 
       - name: Install
-        run: cmake --install build --prefix /tmp/install
+        run: cmake --install build --prefix build/install
 
       - uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: /tmp/install
+          path: build/install
