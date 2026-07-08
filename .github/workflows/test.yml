@@ -20,10 +20,12 @@ jobs:
 
       - name: Download lingmo-theme
         run: |
-          DEB_URL=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
-            | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url' | head -1)
-          curl -L "$DEB_URL" -o /tmp/lingmo-theme.deb
-          dpkg -i /tmp/lingmo-theme.deb || apt-get install -y -f
+          ASSETS=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
+            | jq -r '.assets[] | select(.name | test("^liblingmotheme(1|-dev)") and endswith(".deb")) | .browser_download_url')
+          for url in $ASSETS; do
+            curl -sL "$url" -o "/tmp/$(basename $url)"
+          done
+          dpkg -i /tmp/liblingmotheme*.deb 2>/dev/null || apt-get install -y -f
 
       - uses: actions/checkout@v4
 
@@ -53,10 +55,12 @@ jobs:
 
       - name: Download lingmo-theme
         run: |
-          DEB_URL=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
-            | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url' | head -1)
-          curl -L "$DEB_URL" -o /tmp/lingmo-theme.deb
-          dpkg -i /tmp/lingmo-theme.deb || apt-get install -y -f
+          ASSETS=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
+            | jq -r '.assets[] | select(.name | test("^liblingmotheme(1|-dev)") and endswith(".deb")) | .browser_download_url')
+          for url in $ASSETS; do
+            curl -sL "$url" -o "/tmp/$(basename $url)"
+          done
+          dpkg -i /tmp/liblingmotheme*.deb 2>/dev/null || apt-get install -y -f
 
       - uses: actions/checkout@v4
 
