@@ -20,11 +20,14 @@ jobs:
       - name: Download lingmo-theme
         run: |
           ASSETS=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
-            | jq -r '.assets[] | select(.name | test("^liblingmotheme(1|-dev)") and endswith(".deb")) | .browser_download_url')
+            | jq -r '.assets[] | select(.name | test("^liblingmotheme(1(?![0-9])|-dev)") and endswith(".deb")) | .browser_download_url')
           for url in $ASSETS; do
             curl -sL "$url" -o "/tmp/$(basename $url)"
           done
-          dpkg -i /tmp/liblingmotheme*.deb 2>/dev/null || apt-get install -y -f
+          dpkg -i /tmp/liblingmotheme*.deb || apt-get install -y -f
+          echo "=== Verifying lingmo-theme installation ==="
+          ls -la /usr/lib/*/cmake/LingmoTheme/ 2>&1 || echo "No cmake files found"
+          dpkg -l | grep lingmotheme
 
       - uses: actions/checkout@v4
 
@@ -49,7 +52,7 @@ jobs:
       - name: Download lingmo-theme
         run: |
           ASSETS=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
-            | jq -r '.assets[] | select(.name | test("^(lingmo-theme-(devel|libs))") and endswith(".rpm")) | .browser_download_url')
+            | jq -r '.assets[] | select(.name | test("^(lingmo-theme-(devel|libs))-\\d") and endswith(".rpm")) | .browser_download_url')
           for url in $ASSETS; do
             curl -sL "$url" -o "/tmp/$(basename $url)"
           done
