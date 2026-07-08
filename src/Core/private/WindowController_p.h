@@ -6,11 +6,13 @@
 #include <QString>
 #include <QSize>
 #include <QMargins>
+#include <memory>
 
 class QWindow;
 
 namespace Lingmo {
 
+class WindowAdapter;
 class WindowChrome;
 class WindowEffects;
 
@@ -21,10 +23,12 @@ public:
     ~WindowControllerPrivate();
 
     void applyWindowState(Lingmo::WindowState state);
+    void applyWindowFlags();
 
     WindowController *q;
 
     QWindow *window = nullptr;
+    std::unique_ptr<WindowAdapter> adapter;
     WindowChrome *chrome = nullptr;
     WindowEffects *effects = nullptr;
 

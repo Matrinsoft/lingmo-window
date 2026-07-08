@@ -1,3 +1,10 @@
 # X11 platform adapter
-# Platform-specific window properties for X11.
-# Currently a stub - implementation will use Xlib/XCB.
+add_library(LingmoWindow_X11 OBJECT
+    X11Adapter.cpp
+    X11Adapter.h
+)
+
+target_include_directories(LingmoWindow_X11
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../..   # src/ — for <platform/WindowAdapter.h>
+)

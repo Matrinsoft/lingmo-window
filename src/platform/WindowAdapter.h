@@ -2,6 +2,9 @@
 
 #include <LingmoWindow/Types.h>
 
+#include <QRect>
+#include <Qt>
+
 class QWindow;
 
 namespace Lingmo {
@@ -19,11 +22,15 @@ public:
 
     virtual ~WindowAdapter() = default;
 
-    virtual void setWindowGeometry(QWindow *window, const QRect &geometry);
-    virtual QRect windowGeometry(const QWindow *window) const;
+    virtual Lingmo::Platform platform() const = 0;
 
-    virtual void setWindowState(QWindow *window, Qt::WindowState state);
-    virtual Qt::WindowState windowState(const QWindow *window) const;
+    virtual void setWindowState(QWindow *window, Qt::WindowState state) = 0;
+    virtual Qt::WindowState windowState(const QWindow *window) const = 0;
+
+    virtual void setWindowGeometry(QWindow *window, const QRect &geometry) = 0;
+    virtual QRect windowGeometry(const QWindow *window) const = 0;
+
+    virtual void configureWindowFlags(QWindow *window) = 0;
 
 protected:
     WindowAdapter() = default;

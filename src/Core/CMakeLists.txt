@@ -35,6 +35,7 @@ target_include_directories(LingmoWindow
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../   # for <platform/WindowAdapter.h>
 )
 
 target_link_libraries(LingmoWindow

@@ -8,6 +8,10 @@ function(add_lingmo_window_test name)
             Lingmo::Window
             Qt6::Test
     )
+    target_include_directories(${name}
+        PRIVATE
+            ${CMAKE_SOURCE_DIR}/src   # for <platform/WindowAdapter.h>
+    )
     add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
@@ -28,3 +32,4 @@ add_lingmo_window_test(tst_HeaderBar)
 add_lingmo_window_test(tst_WindowController)
 add_lingmo_window_test(tst_WindowChrome)
 add_lingmo_window_test(tst_Architecture)
+add_lingmo_window_test(tst_WindowAdapter)

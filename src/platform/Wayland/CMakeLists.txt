@@ -1,3 +1,10 @@
 # Wayland platform adapter
-# Platform-specific window properties for Wayland compositors.
-# Currently a stub - implementation will use xdg-shell protocol.
+add_library(LingmoWindow_Wayland OBJECT
+    WaylandAdapter.cpp
+    WaylandAdapter.h
+)
+
+target_include_directories(LingmoWindow_Wayland
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../..   # src/ — for <platform/WindowAdapter.h>
+)

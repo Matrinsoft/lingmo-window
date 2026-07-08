@@ -1,6 +1,7 @@
 #include "private/WindowController_p.h"
 #include "private/WindowChrome_p.h"
 #include "private/WindowEffects_p.h"
+#include <platform/WindowAdapter.h>
 
 #include <QWindow>
 #include <QScreen>
@@ -20,25 +21,31 @@ WindowControllerPrivate::~WindowControllerPrivate() = default;
 void WindowControllerPrivate::applyWindowState(Lingmo::WindowState s)
 {
     state = s;
-    if (!window) return;
+    if (!window || !adapter) return;
 
     switch (s) {
     case Lingmo::WindowState::Normal:
-        window->setWindowState(Qt::WindowNoState);
+        adapter->setWindowState(window, Qt::WindowNoState);
         break;
     case Lingmo::WindowState::Minimized:
-        window->setWindowState(Qt::WindowMinimized);
+        adapter->setWindowState(window, Qt::WindowMinimized);
         break;
     case Lingmo::WindowState::Maximized:
-        window->setWindowState(Qt::WindowMaximized);
+        adapter->setWindowState(window, Qt::WindowMaximized);
         break;
     case Lingmo::WindowState::FullScreen:
-        window->setWindowState(Qt::WindowFullScreen);
+        adapter->setWindowState(window, Qt::WindowFullScreen);
         break;
     case Lingmo::WindowState::Hidden:
         window->hide();
         break;
     }
+}
+
+void WindowControllerPrivate::applyWindowFlags()
+{
+    if (!window || !adapter) return;
+    adapter->configureWindowFlags(window);
 }
 
 WindowController::WindowController(QObject *parent)
@@ -52,6 +59,7 @@ WindowController::~WindowController() = default;
 void WindowController::setWindow(QWindow *w)
 {
     d->window = w;
+    d->adapter.reset(WindowAdapter::create(w));
     d->chrome->setWindow(w);
 }
 
@@ -107,6 +115,7 @@ void WindowController::setResizable(bool resizable)
     if (d->window) {
         d->window->setFlag(Qt::WindowMinimizeButtonHint, resizable);
         d->window->setFlag(Qt::WindowMaximizeButtonHint, resizable);
+        d->applyWindowFlags();
     }
     emit resizableChanged();
 }
@@ -117,7 +126,10 @@ void WindowController::setClosable(bool closable)
 {
     if (d->closable == closable) return;
     d->closable = closable;
-    if (d->window) d->window->setFlag(Qt::WindowCloseButtonHint, closable);
+    if (d->window) {
+        d->window->setFlag(Qt::WindowCloseButtonHint, closable);
+        d->applyWindowFlags();
+    }
     emit closableChanged();
 }
 
