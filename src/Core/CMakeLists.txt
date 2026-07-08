@@ -6,6 +6,14 @@ set(PRIVATE_HEADERS
     private/WindowEffects_p.h
 )
 
+set(PUBLIC_HEADERS
+    ${CMAKE_SOURCE_DIR}/include/LingmoWindow/Window.h
+    ${CMAKE_SOURCE_DIR}/include/LingmoWindow/HeaderBar.h
+    ${CMAKE_SOURCE_DIR}/include/LingmoWindow/WindowController.h
+    ${CMAKE_SOURCE_DIR}/include/LingmoWindow/WindowChrome.h
+    ${CMAKE_SOURCE_DIR}/include/LingmoWindow/WindowEffects.h
+)
+
 set(SOURCES
     Window.cpp
     WindowController.cpp
@@ -17,7 +25,7 @@ set(SOURCES
 )
 
 set(CMAKE_AUTOMOC ON)
-add_library(LingmoWindow SHARED ${SOURCES} ${PRIVATE_HEADERS})
+add_library(LingmoWindow SHARED ${SOURCES} ${PUBLIC_HEADERS} ${PRIVATE_HEADERS})
 add_library(Lingmo::Window ALIAS LingmoWindow)
 
 target_include_directories(LingmoWindow
