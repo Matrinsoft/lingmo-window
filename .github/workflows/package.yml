@@ -1,0 +1,66 @@
+name: Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  deb:
+    runs-on: ubuntu-24.04
+    container: debian:trixie
+
+    steps:
+      - name: Install build dependencies
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq build-essential dpkg-dev debhelper \
+            cmake qt6-base-dev qt6-declarative-dev curl jq
+
+      - name: Download lingmo-theme
+        run: |
+          DEB_URL=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
+            | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url' | head -1)
+          curl -L "$DEB_URL" -o /tmp/lingmo-theme.deb
+          dpkg -i /tmp/lingmo-theme.deb || apt-get install -y -f
+
+      - uses: actions/checkout@v4
+
+      - name: Build Debian package
+        run: dpkg-buildpackage -us -uc -b
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb-packages
+          path: ../*.deb
+
+  rpm:
+    runs-on: ubuntu-24.04
+    container: fedora:44
+
+    steps:
+      - name: Install build dependencies
+        run: |
+          dnf install -y cmake qt6-qtbase-devel qt6-qtdeclarative-devel \
+            rpm-build curl jq
+
+      - name: Download lingmo-theme
+        run: |
+          RPM_URL=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
+            | jq -r '.assets[] | select(.name | endswith(".rpm")) | .browser_download_url' | head -1)
+          curl -L "$RPM_URL" -o /tmp/lingmo-theme.rpm
+          dnf install -y /tmp/lingmo-theme.rpm
+
+      - uses: actions/checkout@v4
+
+      - name: Build RPM package
+        run: |
+          mkdir -p ~/rpmbuild/{SOURCES,SPECS}
+          tar -czf ~/rpmbuild/SOURCES/lingmo-window-1.0.0.tar.gz .
+          cp rpm/lingmo-window.spec ~/rpmbuild/SPECS/
+          rpmbuild -ba ~/rpmbuild/SPECS/lingmo-window.spec
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm-packages
+          path: ~/rpmbuild/RPMS/**/*.rpm

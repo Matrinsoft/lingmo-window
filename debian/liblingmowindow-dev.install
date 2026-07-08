@@ -1,0 +1,3 @@
+usr/include/LingmoWindow/*
+usr/lib/*/cmake/LingmoWindow/*
+usr/lib/*/libLingmoWindow.so

@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    container: debian:trixie
+
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq cmake ninja-build qt6-base-dev \
+            qt6-declarative-dev curl jq
+
+      - name: Download lingmo-theme
+        run: |
+          DEB_URL=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
+            | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url' | head -1)
+          curl -L "$DEB_URL" -o /tmp/lingmo-theme.deb
+          dpkg -i /tmp/lingmo-theme.deb || apt-get install -y -f
+
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: >
+          cmake -B build -G Ninja
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DLINGMO_ENABLE_UNITY_BUILD=ON
+          -DBUILD_TESTING=ON
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Install
+        run: cmake --install build --prefix /tmp/install
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: /tmp/install

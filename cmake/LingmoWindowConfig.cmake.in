@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+set_and_check(LINGMOWINDOW_INCLUDEDIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set_and_check(LINGMOWINDOW_LIBDIR "@PACKAGE_CMAKE_INSTALL_LIBDIR@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/LingmoWindowTargets.cmake")
+
+check_required_components(LingmoWindow)

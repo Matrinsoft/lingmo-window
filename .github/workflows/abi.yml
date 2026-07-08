@@ -1,0 +1,59 @@
+name: ABI Compliance Check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  abi-check:
+    runs-on: ubuntu-24.04
+    container: debian:trixie
+
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq cmake ninja-build qt6-base-dev \
+            qt6-declarative-dev abi-compliance-checker curl jq
+
+      - name: Download lingmo-theme
+        run: |
+          DEB_URL=$(curl -s https://api.github.com/repos/Matrinsoft/lingmo-theme/releases/latest \
+            | jq -r '.assets[] | select(.name | endswith(".deb")) | .browser_download_url' | head -1)
+          curl -L "$DEB_URL" -o /tmp/lingmo-theme.deb
+          dpkg -i /tmp/lingmo-theme.deb || apt-get install -y -f
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build current branch
+        run: |
+          cmake -B build-current -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake --build build-current
+
+      - name: Checkout base branch
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="origin/${{ github.base_ref }}"
+          else
+            BASE="HEAD~1"
+          fi
+          git checkout $BASE -- .
+          cmake -B build-base -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake --build build-base
+
+      - name: Run ABI compliance check
+        run: |
+          abi-compliance-checker -lib libLingmoWindow.so.1 \
+            -old build-base/src/Core/libLingmoWindow.so \
+            -new build-current/src/Core/libLingmoWindow.so \
+            -headers include/ \
+            -report-path abi-report.html || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: abi-report
+          path: abi-report.html

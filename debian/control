@@ -1,0 +1,41 @@
+Source: lingmo-window
+Section: libs
+Priority: optional
+Maintainer: Lingmo OS Team <team@lingmo.org>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.21),
+               qt6-base-dev (>= 6.5),
+               qt6-declarative-dev (>= 6.5),
+               liblingmotheme-dev (>= 1.0.0)
+Standards-Version: 4.7.0
+Homepage: https://lingmo.org
+
+Package: liblingmowindow1
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Lingmo Desktop - Application Window Base Library (runtime)
+ Lingmo Window provides application window abstraction for the Lingmo
+ Desktop environment, including CSD support, window effects, and
+ platform window management.
+
+Package: liblingmowindow-dev
+Architecture: any
+Multi-Arch: same
+Depends: liblingmowindow1 (= ${binary:Version}),
+         ${misc:Depends},
+         liblingmotheme-dev
+Description: Lingmo Desktop - Application Window Base Library (development)
+ This package contains headers and CMake integration for building
+ applications that use Lingmo Window.
+
+Package: qml6-module-lingmowindow
+Architecture: any
+Multi-Arch: same
+Depends: liblingmowindow1 (= ${binary:Version}),
+         qml6-module-lingmotheme,
+         ${shlibs:Depends},
+         ${misc:Depends}
+Description: Lingmo Desktop - Application Window Base Library (QML module)
+ This package contains QML bindings for the Lingmo Window library,
+ providing Window, HeaderBar, Dialog, and WindowEffect QML types.
