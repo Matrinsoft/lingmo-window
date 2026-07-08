@@ -1,5 +1,6 @@
 #include "GenericAdapter.h"
 
+#include <LingmoWindow/Types.h>
 #include <QWindow>
 
 namespace Lingmo {

@@ -1,5 +1,6 @@
 #include "WaylandAdapter.h"
 
+#include <LingmoWindow/Types.h>
 #include <QWindow>
 #include <QScreen>
 #include <QGuiApplication>

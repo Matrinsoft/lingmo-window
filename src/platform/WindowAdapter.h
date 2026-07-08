@@ -1,13 +1,15 @@
 #pragma once
 
-#include <LingmoWindow/Types.h>
-
 #include <QRect>
 #include <Qt>
 
 class QWindow;
 
 namespace Lingmo {
+
+// Forward declaration — concrete definition is in LingmoWindow/Types.h.
+// This avoids pulling the export macro and Qt dependencies into adapter headers.
+enum class Platform : int;
 
 // Abstract interface for platform-specific window operations.
 // Platform adapters handle differences between Wayland, X11, and generic

@@ -1,5 +1,6 @@
 #include "X11Adapter.h"
 
+#include <LingmoWindow/Types.h>
 #include <QWindow>
 
 namespace Lingmo {
