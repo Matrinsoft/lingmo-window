@@ -35,7 +35,15 @@ jobs:
         run: dpkg-buildpackage -us -uc -b
 
       - name: Copy .deb artifacts
-        run: mkdir -p artifacts && cp "${{ github.workspace }}/../"*.deb artifacts/
+        run: |
+          mkdir -p artifacts
+          echo "Workspace: ${{ github.workspace }}"
+          echo "Contents of parent dir:"
+          ls -la "${{ github.workspace }}/.." || true
+          echo "Looking for .deb files..."
+          find "${{ github.workspace }}/.." -maxdepth 1 -name "*.deb" -exec cp -v {} artifacts/ \;
+          echo "Artifacts found:"
+          ls -la artifacts/
 
       - uses: actions/upload-artifact@v4
         with:
