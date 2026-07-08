@@ -25,7 +25,7 @@ qt_add_qml_module(LingmoWindowQml
 target_link_libraries(LingmoWindowQml
     PUBLIC
         Lingmo::Window
-        Lingmo::Theme
+        Lingmo::LingmoTheme
     PRIVATE
         Qt6::Core
         Qt6::Gui
