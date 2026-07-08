@@ -36,7 +36,7 @@ void WaylandAdapter::setWindowState(QWindow *window, Qt::WindowState state)
     case Qt::WindowActive:
         window->show();
         window->raise();
-        window->activateWindow();
+        window->requestActivate();
         break;
     }
 }
