@@ -7,9 +7,8 @@
 #include <QString>
 #include <QIcon>
 #include <QUrl>
+#include <QWindow>
 #include <memory>
-
-class QWindow;
 
 namespace Lingmo {
 
