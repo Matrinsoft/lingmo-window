@@ -18,8 +18,8 @@ void HeaderBarPrivate::updateHeight()
     const auto *theme = Theme::instance();
     if (theme) {
         const auto &metrics = theme->metrics();
-        heightValue = metrics.spacing(Lingmo::Metrics::SpacingLevel::SpacingXLarge) * 2.0
-                    + metrics.spacing(Lingmo::Metrics::SpacingLevel::SpacingMedium);
+        heightValue = metrics.spacingXLarge() * 2.0
+                    + metrics.spacingMedium();
     } else {
         heightValue = 48.0;
     }

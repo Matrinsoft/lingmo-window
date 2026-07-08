@@ -1,3 +1,4 @@
+set(CMAKE_AUTOMOC ON)
 find_package(Qt6 REQUIRED COMPONENTS Test QuickTest)
 
 function(add_lingmo_window_test name)
