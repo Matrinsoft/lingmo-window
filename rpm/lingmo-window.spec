@@ -8,7 +8,7 @@ Summary:        Lingmo Desktop - Application Window Base Library
 
 License:        GPL-2.0-or-later
 URL:            https://lingmo.org
-Source0:        %{name}-%{version}.tar.xz
+Source0:        %{name}-%{version}.tar.gz
 
 BuildRequires:  cmake >= 3.21
 BuildRequires:  qt6-qtbase-devel >= 6.5
@@ -73,5 +73,5 @@ QML module providing Window, HeaderBar, Dialog, and WindowEffects types.
 %license LICENSE
 
 %changelog
-* Mon Jan 01 2026 Lingmo OS Team <team@lingmo.org> - 1.0.0-1
+* Wed Jul 08 2026 Lingmo OS Team <team@lingmo.org> - 1.0.0-1
 - Initial release.
